@@ -10,43 +10,80 @@ package ahorcado;
  * @author usuario
  */
 public class Palabra {
+
     private String palabra;
     private char[] letrasAcertadas;
-    private StringBuilder letrasfalladas;
-    
-    public Palabra(String palabra){
-        this.palabra = palabra;
-    }
+    private char[] letrasfalladas;
+    private int palabracompleta;
+    private StringBuilder letras;
 
-    public String getPalabra() {
-        return palabra;
+    public Palabra(String palabra) {
+        this.palabra = palabra;
+        this.palabracompleta = 0;
+        letrasAcertadas = new char[10];
+        letrasfalladas = new char[5];
+        letras = new StringBuilder();
+    }
+    
+    public void resetearJuego(String palabra, Jugador jugador){
+        this.palabracompleta = 0;
+        letras = new StringBuilder();
+        setPalabra(palabra);
+        letrasAcertadas = new char[10];
+        letrasfalladas = new char[5];
+        jugador.setAciertos(0);
+        jugador.setErrores(0);
     }
 
     public void setPalabra(String palabra) {
         this.palabra = palabra;
     }
     
-    public void Introducirletra(char letra){
+    public void introducirletra(char letra, Jugador j) {
+        letrasIntroducidas(letra);
         char[] letras = palabra.toCharArray();
+        System.out.println("-> La palabra contiene " + letras.length + " letras");
+        boolean encontrado = false;
         for (int i = 0; i < letras.length; i++) {
-            if(letra == letras[i]){
+            if (letra == letras[i]) {
+                System.out.println("--- ACIERTO. La letra -> " + letras[i] + " <- esta en la posicion >> " + (i + 1) + " de la palabra.");
                 letrasAcertadas[i] = letra;
-            } else {
-                letrasAcertadas[i] = '*';
-                letrasfalladas.append(" " + letra);
+                palabracompleta++;
+                encontrado = true;
+                j.sumaAcierto();
+                if (palabracompleta == letras.length) {
+                    juegoTerminado();
+                    j.sumaPartidaGanada();
+                }
             }
         }
-    }
-    
-    public void letrasFalladas(){
-        System.out.println("Las letras que no estan en la palabra son: ");
-        System.out.println(letrasfalladas);
-    }
-    
-    public void letrasAcertadas(){
-        for (int i = 0; i < letrasAcertadas.length; i++) {
-            System.out.println(letrasAcertadas[i]);
+        if (encontrado == false) {
+            System.out.println("--- ERROR. La letra >> " + letra + " << no esta en la palabra---");
+            j.sumaError();
         }
     }
-    
+
+    public void letrasIntroducidas(char letra) {
+        letras.append(letra);
+        System.out.println("\n-> Letras introducidas: " + letras);
+    }
+
+    public void juegoTerminado() {
+        System.out.println("CORRECTO, ESA ES LA PALABRA.");
+    }
+
+    public void letrasAcertadas() {
+        System.out.println("\n***Letras que estan en la palabra***");
+        System.out.println(letrasAcertadas);
+
+    }
+
+    public int getPalabracompleta() {
+        return palabracompleta;
+    }
+
+    public int longitudPalabra() {
+        return palabra.toCharArray().length;
+    }
+
 }

@@ -10,36 +10,50 @@ package ahorcado;
  * @author usuario
  */
 public class Jugador {
-    private String nombreJugador;
+    private final String nombreJugador;
     private int aciertos;
     private int partidasganadas;
+    private int errores;
     
     public Jugador(String nombre){
-    aciertos = 0;
+    this.aciertos = 0;
     this.nombreJugador = nombre;
-    partidasganadas = 0;
+    this.partidasganadas = 0;
+    this.errores = 0;
+    }
+
+    public void setAciertos(int aciertos) {
+        this.aciertos = aciertos;
+    }
+
+    public void setErrores(int errores) {
+        this.errores = errores;
     }
     
-    public int aciertos(){
-        return aciertos++;
+    public int sumaAcierto(){
+        aciertos++;
+        return aciertos;
     }
 
     public String getNombreJugador() {
         return nombreJugador;
     }
 
-    public int getAciertos() {
-        return aciertos;
-    }
-
     public int getPartidasganadas() {
         return partidasganadas;
     }
 
-    public void setPartidasganadas(int partidasganadas) {
-        this.partidasganadas = partidasganadas;
+    public void sumaPartidaGanada() {
+        partidasganadas++;
     }
     
-    
+    public int sumaError(){
+        errores++;
+        return errores;
+    }
+
+    public int getErrores() {
+        return errores;
+    }
    
 }
